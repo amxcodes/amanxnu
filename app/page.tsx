@@ -136,6 +136,17 @@ const projects = [
     category: "Web App",
     date: "2024"
   },
+  {
+    id: 7,
+    title: "Mirae Studio - SVG-based AI Post Maker Automation",
+    description: "A Canva-like web editor that lets users design social-media posts with an SVG canvas, then auto-generate polished versions using Gemini LLM. Features user authentication, template library, one-click AI enhancement, and direct Instagram publishing via Instagrapi.",
+    images: ["/placeholder.svg"],
+    technologies: ["React.js", "Fabric.js", "Gemini API", "Instagrapi", "NextAuth", "Tailwind CSS"],
+    liveUrl: "https://amxdevs.onrender.com/",
+    githubUrl: "https://github.com/amxcodes/lika",
+    category: "Web App",
+    date: "Ongoing"
+  },
 ]
 
 const navItems = [
