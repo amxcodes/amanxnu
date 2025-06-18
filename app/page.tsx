@@ -285,7 +285,7 @@ export default function Portfolio() {
               A recent graduate with a strong passion for technology, creativity, and innovation. I enjoy working on projects that blend technical skills with creative thinking, staying updated with the latest AI tools and trends.
             </p>
             <p className="text-gray-500 text-sm">
-              My experiences across different forms of expression—from building tech projects to participating in creative productions—have taught me the value of fresh ideas, teamwork, and adaptability. I am eager to learn, contribute, and grow while making a meaningful impact.
+              My experiences across different forms of expression from building tech projects to participating in creative productions, have taught me the value of fresh ideas, teamwork, and adaptability. I am eager to learn, contribute, and grow while making a meaningful impact.
             </p>
           </motion.div>
 
