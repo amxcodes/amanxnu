@@ -256,11 +256,63 @@
 
 /* Glass Morphism Effects */
 .glass-modal {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  color: #e5e5e5;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  padding: 2rem;
+}
+
+/* Custom styles for the dialog title within the modal */
+.glass-modal [data-dialog-title] {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+}
+
+/* Custom styles for the dialog description */
+.glass-modal [data-dialog-description] {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #a3a3a3;
+}
+
+/* Styles for the contact info section */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.contact-info a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1rem;
+  color: #d4d4d4;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+}
+
+.contact-info a:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.contact-info a svg {
+  transition: transform 0.2s ease;
+}
+
+.contact-info a:hover svg {
+  transform: scale(1.1);
 }
 
 /* Glass Card Effects */
@@ -316,4 +368,19 @@ html {
 body.projection-open [data-radix-dialog-overlay],
 body.projection-open [data-radix-dialog-content] {
   pointer-events: none;
+}
+
+@keyframes pulse-text {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+.animate-pulse-text {
+  animation: pulse-text 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

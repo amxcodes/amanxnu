@@ -4,8 +4,8 @@ import { useEffect, useState, useMemo } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
-import { ExternalLink, Github, Mail, MapPin, Phone, Calendar, ArrowRight, Menu, X, Instagram, Twitter, Briefcase } from "lucide-react"
-import ProfileCard from "@/components/ui/profile-card"
+import { ExternalLink, Github, Mail, MapPin, Phone, Calendar, ArrowRight, Menu, X, Instagram, Twitter, Briefcase, Linkedin } from "lucide-react"
+import ProfileSection from "@/components/ui/ProfileSection"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -140,7 +140,18 @@ const projects = [
     id: 7,
     title: "Mirae Studio - SVG-based AI Post Maker Automation",
     description: "A Canva-like web editor that lets users design social-media posts with an SVG canvas, then auto-generate polished versions using Gemini LLM. Features user authentication, template library, one-click AI enhancement, and direct Instagram publishing via Instagrapi.",
-    images: ["/placeholder.svg"],
+    images: [
+      "/mirae/Screenshot%202025-06-18%20133411.png",
+      "/mirae/Screenshot%202025-06-18%20132749.png",
+      "/mirae/Screenshot%202025-06-18%20132813.png",
+      "/mirae/Screenshot%202025-06-18%20132929.png",
+      "/mirae/Screenshot%202025-06-18%20133005.png",
+      "/mirae/Screenshot%202025-06-18%20133052.png",
+      "/mirae/Screenshot%202025-06-18%20133114.png",
+      "/mirae/Screenshot%202025-06-18%20133151.png",
+      "/mirae/Screenshot%202025-06-18%20133245.png",
+      "/mirae/Screenshot%202025-06-18%20133322.png"
+    ],
     technologies: ["React.js", "Fabric.js", "Gemini API", "Instagrapi", "NextAuth", "Tailwind CSS"],
     liveUrl: "https://amxdevs.onrender.com/",
     githubUrl: "https://github.com/amxcodes/lika",
@@ -152,7 +163,7 @@ const projects = [
 const navItems = [
   { name: "Work", href: "#work" },
   { name: "About", href: "#about" },
-  { name: "Future", href: "#blog" },
+  { name: "Future", href: "#future" },
   { name: "Contact", href: "#contact" },
 ]
 
@@ -174,6 +185,11 @@ export default function Portfolio() {
   const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null)
   const [carouselIndex, setCarouselIndex] = useState(0)
   const [showProjection, setShowProjection] = useState(false)
+
+  // State for each modal
+  const [aboutModalOpen, setAboutModalOpen] = useState(false);
+  const [futureModalOpen, setFutureModalOpen] = useState(false);
+  const [contactModalOpen, setContactModalOpen] = useState(false);
 
   useEffect(() => {
     if (showProjection) {
@@ -213,6 +229,18 @@ export default function Portfolio() {
     );
   }, [activeTab]);
 
+  const handleNavClick = (href: string) => {
+    if (href === '#about') setAboutModalOpen(true);
+    else if (href === '#future') setFutureModalOpen(true);
+    else if (href === '#contact') setContactModalOpen(true);
+    else {
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       {/* Left Column - Fixed and Vertically Centered */}
@@ -239,24 +267,17 @@ export default function Portfolio() {
                 </div>
               </Link>
               {/* Desktop Navigation */}
-              <nav className="hidden md:flex items-center">
-                <div className="flex items-center space-x-1 bg-white/60 rounded-full p-1 shadow-inner shadow-stone-200/50">
-                  {navItems.map((item) => (
-                    <motion.div
-                      key={item.name}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Link
-                        href={item.href}
-                        className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 rounded-full transition-colors duration-200"
-                      >
-                        {item.name}
-                      </Link>
-                    </motion.div>
-                  ))}
-                </div>
+              <nav className="hidden lg:flex items-center gap-1">
+                {navItems.map((item) => (
+                  <Button
+                    key={item.name}
+                    variant="ghost"
+                    className="text-black/70 hover:text-black rounded-full"
+                    onClick={() => handleNavClick(item.href)}
+                  >
+                    {item.name}
+                  </Button>
+                ))}
               </nav>
               {/* Mobile Navigation */}
               <div className="md:hidden flex items-center space-x-3">
@@ -572,17 +593,7 @@ export default function Portfolio() {
               transition={{ delay: 0.6, duration: 0.6 }}
               className="my-16"
             >
-              <ProfileCard
-                name="Aman Anu"
-                title="Developer & Designer"
-                handle="amanxnu"
-                status="Available for Projects"
-                contactText="Let's Connect"
-                avatarUrl="/profile-avatar.jpg"
-                showUserInfo={true}
-                enableTilt={true}
-                onContactClick={() => window.location.href = 'mailto:amananuworks@gmail.com'}
-              />
+                              <ProfileSection />
             </motion.div>
 
             {/* Footer */}
@@ -756,9 +767,84 @@ export default function Portfolio() {
                 setIndex={setCarouselIndex}
               />
             )}
+
+            {/* About Modal */}
+            <Dialog open={aboutModalOpen} onOpenChange={setAboutModalOpen}>
+              <DialogContent className="glass-modal">
+                <DialogHeader>
+                  <DialogTitle data-dialog-title>About Me</DialogTitle>
+                </DialogHeader>
+                <p data-dialog-description>
+                  I am a passionate developer and designer with a knack for creating beautiful and functional applications. I have experience in web and mobile development, with a focus on creating engaging user experiences.
+                </p>
+              </DialogContent>
+            </Dialog>
+
+            {/* Future Modal */}
+            <Dialog open={futureModalOpen} onOpenChange={setFutureModalOpen}>
+              <DialogContent className="glass-modal">
+                <DialogHeader>
+                  <DialogTitle data-dialog-title>Future Plans</DialogTitle>
+                </DialogHeader>
+                <p data-dialog-description>
+                  I am always looking for new challenges and opportunities to grow. I plan to continue expanding my skills in AI and machine learning, and I am excited to see where my journey takes me.
+                </p>
+              </DialogContent>
+            </Dialog>
+
+            {/* Contact Modal */}
+            <Dialog open={contactModalOpen} onOpenChange={setContactModalOpen}>
+              <DialogContent className="glass-modal">
+                <DialogHeader>
+                  <DialogTitle data-dialog-title>Contact Me</DialogTitle>
+                </DialogHeader>
+                <div className="contact-info">
+                  <a href="tel:9037078553">
+                    <Phone size={18} />
+                    <span>+91 9037078553</span>
+                  </a>
+                  <a href="https://www.linkedin.com/in/aman-anu-303938255" target="_blank" rel="noopener noreferrer">
+                    <Linkedin size={18} />
+                    <span>linkedin.com/in/aman-anu</span>
+                  </a>
+                  <a href="mailto:amananuworks@gmail.com">
+                    <Mail size={18} />
+                    <span>amananuworks@gmail.com</span>
+                  </a>
+                </div>
+              </DialogContent>
+            </Dialog>
           </main>
         </div>
       </div>
+
+      {/* Mobile Navigation Menu */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="lg:hidden absolute top-24 left-0 right-0 bg-stone-100/90 backdrop-blur-lg shadow-xl rounded-2xl p-4 z-50 mx-6"
+          >
+            <nav className="flex flex-col gap-2">
+              {navItems.map((item) => (
+                <Button
+                  key={item.name}
+                  variant="ghost"
+                  className="text-black/80 hover:text-black w-full justify-start text-lg py-3"
+                  onClick={() => {
+                    handleNavClick(item.href);
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  {item.name}
+                </Button>
+              ))}
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

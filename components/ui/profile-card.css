@@ -58,7 +58,7 @@
 
 .pc-card-wrapper:hover::before,
 .pc-card-wrapper.active::before {
-  filter: contrast(1) saturate(2) blur(40px) opacity(1);
+  filter: contrast(1) saturate(1.5) blur(30px) opacity(1);
   transform: scale(0.9) translate3d(0, 0, 0.1px);
 }
 
