@@ -39,34 +39,16 @@ const designs: Design[] = [
 ];
 
 const LazyEmbed: React.FC<Design> = ({ src, link, label, aspect }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    if (!ref.current) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisible(true);
-            observer.disconnect();
-          }
-        });
-      },
-      { rootMargin: '200px' }
-    );
-    observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
+  const [loaded, setLoaded] = useState(false);
 
   return (
     <div
-      ref={ref}
       className={`relative w-full ${
         aspect === 'video' ? 'aspect-video' : 'aspect-square'
       } shadow-lg rounded-xl overflow-hidden mt-10 max-h-[60vh]`}
+      onClick={() => setLoaded(true)}
     >
-      {visible ? (
+      {loaded ? (
         <iframe
           loading="lazy"
           className="absolute inset-0 w-full h-full border-0"
@@ -75,8 +57,8 @@ const LazyEmbed: React.FC<Design> = ({ src, link, label, aspect }) => {
           allowFullScreen
         />
       ) : (
-        <div className="absolute inset-0 bg-zinc-800/30 flex items-center justify-center text-white text-sm">
-          Loading…
+        <div className="absolute inset-0 bg-zinc-800/30 flex items-center justify-center text-white text-sm cursor-pointer select-none">
+          Click to load
         </div>
       )}
       <a
