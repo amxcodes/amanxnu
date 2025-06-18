@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
-import { ExternalLink, Github, Mail, MapPin, Calendar, ArrowRight, Menu, X, Instagram, Twitter, Briefcase } from "lucide-react"
+import { ExternalLink, Github, Mail, MapPin, Phone, Calendar, ArrowRight, Menu, X, Instagram, Twitter, Briefcase } from "lucide-react"
 import ProfileCard from "@/components/ui/profile-card"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
@@ -268,9 +268,9 @@ export default function Portfolio() {
           >
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-3 leading-tight">Aman Anu</h1>
             <p className="text-xl sm:text-2xl text-gray-400 mb-4">Developer & Designer</p>
-            <div className="flex items-center justify-center lg:justify-start text-gray-500 mb-6">
-              <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
-              <span className="text-sm">San Francisco, CA</span>
+            <div className="flex flex-col items-center lg:items-start text-gray-500 mb-6 gap-1">
+              <div className="flex items-center"><MapPin className="w-4 h-4 mr-2 flex-shrink-0" /><span className="text-sm">Edappally toll, Ernakulam</span></div>
+              <div className="flex items-center"><Phone className="w-4 h-4 mr-2 flex-shrink-0" /><span className="text-sm">9037078553</span></div>
             </div>
           </motion.div>
 
@@ -554,6 +554,7 @@ export default function Portfolio() {
             <CanvaSection />
 
             {/* Profile Card Section */}
+            <h2 className="text-3xl font-bold mt-20 mb-6 text-white text-center lg:text-left">Profile Card</h2>
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
