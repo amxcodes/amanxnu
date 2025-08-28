@@ -14,6 +14,8 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog"
 import { createPortal } from "react-dom"
 import dynamic from "next/dynamic"
+import MusicSection from "@/components/MusicSection"
+import Navbar from "@/components/Navbar"
 
 const projects = [
   {
@@ -244,53 +246,16 @@ export default function Portfolio() {
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       {/* Left Column - Fixed and Vertically Centered */}
-      <div className="lg:w-2/5 lg:h-screen lg:fixed lg:left-0 lg:top-0 bg-black flex items-center justify-center p-6 sm:p-8 lg:p-12">
-        <div className="max-w-sm w-full pt-8 lg:pt-0">
-          {/* Navbar (now inside left column) */}
-          <header className="flex justify-center mb-8 w-full">
-            <motion.div
-              initial={{ y: -100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-              className={cn(
-                'flex items-center gap-4 transition-all duration-500',
-                scrolled
-                  ? 'bg-stone-100/90 backdrop-blur-xl shadow-2xl shadow-black/10'
-                  : 'bg-stone-100/80 backdrop-blur-lg shadow-xl shadow-black/5',
-                'rounded-full border border-stone-200/80 px-4 py-2'
-              )}
-            >
-              {/* Logo Section */}
-              <Link href="/">
-                <div className="h-10 w-10 rounded-full bg-black flex items-center justify-center shadow-md">
-                  <span className="text-white font-bold text-sm">AA</span>
-                </div>
-              </Link>
-              {/* Desktop Navigation */}
-              <nav className="hidden lg:flex items-center gap-1">
-                {navItems.map((item) => (
-                  <Button
-                    key={item.name}
-                    variant="ghost"
-                    className="text-black/70 hover:text-black rounded-full"
-                    onClick={() => handleNavClick(item.href)}
-                  >
-                    {item.name}
-                  </Button>
-                ))}
-              </nav>
-              {/* Mobile Navigation */}
-              <div className="md:hidden flex items-center space-x-3">
-                <button
-                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="p-2 text-black hover:text-gray-600 transition-colors rounded-lg hover:bg-gray-100"
-                >
-                  {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-                </button>
-              </div>
-            </motion.div>
-          </header>
-
+      <div className="lg:w-2/f lg:h-screen lg:fixed lg:left-0 lg:top-0 bg-black flex lg:items-start justify-center lg:justify-start p-6 sm:p-8 lg:px-12 lg:py-8">
+        <div className="max-w-sm w-full">
+          <Navbar
+            navItems={navItems}
+            handleNavClick={handleNavClick}
+            scrolled={scrolled}
+            mobileMenuOpen={mobileMenuOpen}
+            setMobileMenuOpen={setMobileMenuOpen}
+          />
+          {/* Section Switcher */}
           {/* Name and Title */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -305,7 +270,6 @@ export default function Portfolio() {
               <div className="flex items-center"><Phone className="w-4 h-4 mr-2 flex-shrink-0" /><span className="text-sm">9037078553</span></div>
             </div>
           </motion.div>
-
           {/* Introduction */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -320,7 +284,6 @@ export default function Portfolio() {
               My experiences across different forms of expression from building tech projects to participating in creative productions, have taught me the value of fresh ideas, teamwork, and adaptability. I am eager to learn, contribute, and grow while making a meaningful impact.
             </p>
           </motion.div>
-
           {/* Social Links - Small Bubbles */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -351,7 +314,6 @@ export default function Portfolio() {
               </motion.div>
             ))}
           </motion.div>
-
           {/* Contact Button */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -375,14 +337,14 @@ export default function Portfolio() {
       </div>
 
       {/* Right Column - Scrollable */}
-      <div className="lg:w-3/5 lg:ml-[40%] bg-black p-6 sm:p-8 lg:p-12">
-        <div className="max-w-4xl mx-auto">
+      <div className="lg:w-3/5 lg:ml-[40%] bg-black p-6 sm:p-8 lg:px-12 lg:py-8">
+            <div className="max-w-4xl mx-auto">
           <main>
             {/* Featured Projects Section */}
-            <motion.div
+              <motion.div
               id="work"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7, duration: 0.6 }}
               className="mb-12"
             >
@@ -405,25 +367,25 @@ export default function Portfolio() {
               </div>
             </motion.div>
 
-            {/* Project Categories */}
+                {/* Project Categories */}
             <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="mb-12">
               <TabsList className="bg-zinc-900 p-1.5 rounded-full backdrop-blur-sm border border-white/10 shadow-lg inline-flex">
-                <TabsTrigger
-                  value="all"
+                    <TabsTrigger
+                      value="all"
                   className="rounded-full data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-lg text-sm font-medium text-gray-400 hover:text-white px-6 py-2.5 transition-all duration-300"
-                >
-                  All
-                </TabsTrigger>
-                <TabsTrigger
-                  value="webapp"
+                    >
+                      All
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="webapp"
                   className="rounded-full data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-lg text-sm font-medium text-gray-400 hover:text-white px-6 py-2.5 transition-all duration-300"
-                >
-                  Web Apps
-                </TabsTrigger>
-                <TabsTrigger
+                    >
+                      Web Apps
+                    </TabsTrigger>
+                    <TabsTrigger
                   value="desktopapp"
                   className="rounded-full data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-lg text-sm font-medium text-gray-400 hover:text-white px-6 py-2.5 transition-all duration-300"
-                >
+                    >
                   Desktop Apps
                 </TabsTrigger>
                 <TabsTrigger
@@ -431,98 +393,98 @@ export default function Portfolio() {
                   className="rounded-full data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-lg text-sm font-medium text-gray-400 hover:text-white px-6 py-2.5 transition-all duration-300"
                 >
                   Mobile Apps
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
 
-            {/* Projects Grid */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8, duration: 0.6 }}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-6"
-            >
-              <AnimatePresence mode="wait">
-                {filteredProjects.map((project, index) => (
-                  <motion.div
-                    key={project.id}
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -40 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    className="group cursor-pointer"
+              {/* Projects Grid */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8, duration: 0.6 }}
+                className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+              >
+                <AnimatePresence mode="wait">
+                  {filteredProjects.map((project, index) => (
+                    <motion.div
+                      key={project.id}
+                      initial={{ opacity: 0, y: 40 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -40 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      className="group cursor-pointer"
                     onClick={() => {
                       setSelectedProject(project)
                       setModalOpen(true)
                       setCarouselIndex(0)
                     }}
-                  >
+                    >
                     <Card className="overflow-hidden bg-zinc-900/70 border-zinc-800/80 rounded-3xl backdrop-blur-sm hover:bg-zinc-900/90 transition-all duration-500 border hover:border-white/20 h-full flex flex-col">
-                      {/* Project Image */}
+                        {/* Project Image */}
                       <div className="relative overflow-hidden aspect-[16/10]">
-                        <Image
+                          <Image
                           src={project.images[0] || "/placeholder.svg"}
-                          alt={project.title}
-                          width={600}
+                            alt={project.title}
+                            width={600}
                           height={375}
                           className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                        
-                        {/* Category Badge */}
-                        <div className="absolute top-4 left-4">
-                          <Badge
-                            variant="outline"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                          
+                          {/* Category Badge */}
+                          <div className="absolute top-4 left-4">
+                            <Badge
+                              variant="outline"
                             className="bg-black/60 text-white border-white/20 rounded-lg backdrop-blur-md px-3 py-1 text-xs font-medium"
-                          >
-                            {project.category}
-                          </Badge>
-                        </div>
-                        
-                        {/* Project Number */}
-                        <div className="absolute top-4 right-4">
+                            >
+                              {project.category}
+                            </Badge>
+                          </div>
+                          
+                          {/* Project Number */}
+                          <div className="absolute top-4 right-4">
                           <span className="text-white/70 font-mono text-xs bg-black/50 backdrop-blur-md px-2 py-1 rounded-md">
-                            0{index + 1}
-                          </span>
-                        </div>
+                              0{index + 1}
+                            </span>
+                          </div>
 
-                        {/* Action Buttons - Show on Hover */}
+                          {/* Action Buttons - Show on Hover */}
                         <div className="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                            <Button
+                            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                              <Button
                               size="icon"
                               className="bg-white/90 text-black hover:bg-white rounded-lg font-medium backdrop-blur-sm h-8 w-8"
-                              asChild
-                            >
-                              <Link href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                                <ExternalLink className="w-4 h-4" />
-                              </Link>
+                                asChild
+                              >
+                                <Link href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                                  <ExternalLink className="w-4 h-4" />
+                                </Link>
                             </Button>
-                          </motion.div>
-                          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                            <Button
+                              </motion.div>
+                            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                              <Button
                               size="icon"
                               className="bg-white/90 text-black hover:bg-white rounded-lg backdrop-blur-sm h-8 w-8"
-                              asChild
-                            >
-                              <Link href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                                <Github className="w-4 h-4" />
-                              </Link>
-                            </Button>
-                          </motion.div>
+                                asChild
+                              >
+                                <Link href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                                  <Github className="w-4 h-4" />
+                                </Link>
+                              </Button>
+                            </motion.div>
+                          </div>
                         </div>
-                      </div>
 
-                      {/* Project Content */}
+                        {/* Project Content */}
                       <CardContent className="p-6 flex-grow flex flex-col justify-between -mt-px">
                         <div>
                           <CardTitle className="text-xl font-bold text-zinc-100 mb-2 group-hover:text-white transition-colors leading-tight">
-                            {project.title}
-                          </CardTitle>
+                              {project.title}
+                            </CardTitle>
                           <CardDescription className="text-sm text-gray-400 leading-relaxed line-clamp-2 mb-4">
-                            {project.description}
-                          </CardDescription>
-                        </div>
+                              {project.description}
+                            </CardDescription>
+                          </div>
 
                         <div>
                           {/* Technologies */}
@@ -551,36 +513,36 @@ export default function Portfolio() {
                             <div className="flex gap-4">
                               {project.liveUrl && (
                                 <a
-                                  href={project.liveUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
+                                href={project.liveUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                   className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors duration-300"
-                                >
+                              >
                                   <ExternalLink className="w-3.5 h-3.5" />
-                                  Live Demo
+                                Live Demo
                                 </a>
                               )}
                               {project.githubUrl && (
                                 <a
-                                  href={project.githubUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
+                                href={project.githubUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                   className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors duration-300"
-                                >
+                              >
                                   <Github className="w-3.5 h-3.5" />
-                                  Code
+                                Code
                                 </a>
                               )}
                             </div>
                             <ArrowRight className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors duration-300" />
                           </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </motion.div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </motion.div>
 
             {/* Canva Designs Section */}
             <CanvaSection />
@@ -596,27 +558,27 @@ export default function Portfolio() {
                               <ProfileSection />
             </motion.div>
 
-            {/* Footer */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              {/* Footer */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2, duration: 0.6 }}
-              className="mt-20 pt-12 border-t border-white/10 text-center"
-            >
-              <p className="text-gray-400 mb-8 text-xl">Interested in working together?</p>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button
-                  size="lg"
-                  className="bg-white text-black hover:bg-gray-200 rounded-xl font-medium px-8 py-4 text-lg"
-                  asChild
-                >
+                transition={{ delay: 1.2, duration: 0.6 }}
+                className="mt-20 pt-12 border-t border-white/10 text-center"
+              >
+                <p className="text-gray-400 mb-8 text-xl">Interested in working together?</p>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button
+                    size="lg"
+                    className="bg-white text-black hover:bg-gray-200 rounded-xl font-medium px-8 py-4 text-lg"
+                    asChild
+                  >
                   <Link href="mailto:amananuworks@gmail.com">
-                    <Mail className="w-5 h-5 mr-2" />
-                    Let's Talk
-                  </Link>
-                </Button>
+                      <Mail className="w-5 h-5 mr-2" />
+                      Let's Talk
+                    </Link>
+                  </Button>
+                </motion.div>
               </motion.div>
-            </motion.div>
 
             {/* Project Modal */}
             <Dialog open={modalOpen} onOpenChange={setModalOpen}>
@@ -745,8 +707,8 @@ export default function Portfolio() {
                             Code
                           </a>
                         )}
-                      </div>
-                    </div>
+            </div>
+          </div>
 
                     {/* Close button in the corner */}
                     <DialogClose className="absolute right-1 top-1 p-1.5 text-white/70 hover:text-white">

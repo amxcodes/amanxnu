@@ -1,149 +1,301 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+'use client';
+
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { ExternalLink, X, Palette } from 'lucide-react';
 
 interface Design {
-  src: string;
   link: string;
   label: string;
   aspect: 'video' | 'square';
+  emoji: string;
+  description: string;
 }
 
 const designs: Design[] = [
   {
-    src: 'https://www.canva.com/design/DAGb4roq68A/sCoDp_DIF5VlIUt5d-cQ0A/view?embed',
-    link:
-      'https://www.canva.com/design/DAGb4roq68A/sCoDp_DIF5VlIUt5d-cQ0A/view?utm_content=DAGb4roq68A&utm_campaign=designshare&utm_medium=embeds&utm_source=link',
+    link: 'https://www.canva.com/design/DAGb4roq68A/sCoDp_DIF5VlIUt5d-cQ0A/view',
     label: 'LOOMLORE. by Aman Anu',
     aspect: 'video',
+    emoji: '🎨',
+    description: 'Creative presentation design'
   },
   {
-    src: 'https://www.canva.com/design/DAGbhlwhmKE/4rnpfBMddIJ51wSq9TcvdA/view?embed',
-    link:
-      'https://www.canva.com/design/DAGbhlwhmKE/4rnpfBMddIJ51wSq9TcvdA/view?utm_content=DAGbhlwhmKE&utm_campaign=designshare&utm_medium=embeds&utm_source=link',
+    link: 'https://www.canva.com/design/DAGbhlwhmKE/4rnpfBMddIJ51wSq9TcvdA/view',
     label: 'Seminar Presentation by Aman Anu',
     aspect: 'video',
+    emoji: '📊',
+    description: 'Professional seminar slides'
   },
   {
-    src: 'https://www.canva.com/design/DAGqI3cX9CM/AMxDyHflIU1KNJ3g27mL2g/view?embed',
-    link:
-      'https://www.canva.com/design/DAGqI3cX9CM/AMxDyHflIU1KNJ3g27mL2g/view?utm_content=DAGqI3cX9CM&utm_campaign=designshare&utm_medium=embeds&utm_source=link',
+    link: 'https://www.canva.com/design/DAGqI3cX9CM/AMxDyHflIU1KNJ3g27mL2g/view',
     label: 'Custom Designs by Aman Anu',
     aspect: 'video',
+    emoji: '✨',
+    description: 'Custom creative designs'
   },
   {
-    src: 'https://www.canva.com/design/DAGenGEJ8Y0/rbHK2wMy6tm6JgnodNHuVA/view?embed',
-    link:
-      'https://www.canva.com/design/DAGenGEJ8Y0/rbHK2wMy6tm6JgnodNHuVA/view?utm_content=DAGenGEJ8Y0&utm_campaign=designshare&utm_medium=embeds&utm_source=link',
+    link: 'https://www.canva.com/design/DAGenGEJ8Y0/rbHK2wMy6tm6JgnodNHuVA/view',
     label: 'Copy of AROHA 25 (1080×1350) by Bipin Damodaran',
     aspect: 'square',
+    emoji: '🎯',
+    description: 'Event poster design'
   },
 ];
 
-const AnimatedBackground: React.FC<{ isPaused: boolean }> = ({ isPaused }) => {
-  const shapes = Array.from({ length: 10 }).map((_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    size: 20 + Math.random() * 60,
-    color: `hsla(${Math.random() * 360}, 70%, 50%, 0.1)`,
-    duration: 15 + Math.random() * 20,
-    delay: Math.random() * 5,
-  }));
-
+const DesignsModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  const isMobile = useIsMobile();
+  
+  if (isMobile) {
+    return (
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="w-[95vw] max-w-sm mx-4 glass-modal p-0 overflow-hidden max-h-[85vh]">
+          <div className="relative">
+            {/* Header */}
+            <DialogHeader className="p-4 pb-3 text-center border-b border-zinc-700/50">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <Palette className="text-white" size={20} />
+                  <span className="text-sm text-zinc-400">Design Portfolio</span>
+                </div>
+                <DialogClose asChild>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 text-zinc-400 hover:text-white rounded-full">
+                    <X size={16} />
+                  </Button>
+                </DialogClose>
+              </div>
+              <DialogTitle className="text-lg font-semibold text-white leading-tight">
+                My Canva Designs
+              </DialogTitle>
+              <p className="text-xs text-zinc-400 mt-1">
+                {designs.length} creative projects
+              </p>
+            </DialogHeader>
+            
+            {/* Content */}
+            <div className="p-4 space-y-3 max-h-[50vh] overflow-y-auto custom-scrollbar">
+              {designs.map((design, index) => (
+                <motion.a
+                  key={design.link}
+                  href={design.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-3 bg-zinc-800/30 hover:bg-zinc-700/50 rounded-lg border border-zinc-700/30 hover:border-zinc-600/50 transition-all duration-200 group"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="text-2xl">{design.emoji}</div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-medium text-white text-sm group-hover:text-zinc-200 transition-colors line-clamp-1">
+                      {design.label}
+                    </h4>
+                    <p className="text-xs text-zinc-400 group-hover:text-zinc-300 transition-colors line-clamp-1">
+                      {design.description}
+                    </p>
+                  </div>
+                  <ExternalLink size={16} className="text-zinc-500 group-hover:text-white transition-colors" />
+                </motion.a>
+              ))}
+            </div>
+            
+            {/* Footer */}
+            <div className="p-4 pt-2 border-t border-zinc-700/30">
+              <p className="text-xs text-zinc-500 text-center">
+                Tap any design to open in Canva (opens in new tab)
+              </p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+  
+  // Desktop version
   return (
-    <div className="absolute inset-0 w-full h-full overflow-hidden">
-      {shapes.map(shape => (
-        <motion.div
-          key={shape.id}
-          className="absolute rounded-full"
-          style={{
-            left: `${shape.x}%`,
-            top: `${shape.y}%`,
-            width: `${shape.size}vmin`,
-            height: `${shape.size}vmin`,
-            backgroundColor: shape.color,
-            filter: 'blur(60px)',
-          }}
-          animate={{
-            scale: [1, 1.2, 1],
-            x: [`${shape.x}%`, `${shape.x + (Math.random() - 0.5) * 20}%`, `${shape.x}%`],
-            y: [`${shape.y}%`, `${shape.y + (Math.random() - 0.5) * 20}%`, `${shape.y}%`],
-          }}
-          transition={{
-            duration: shape.duration,
-            repeat: Infinity,
-            repeatType: 'mirror',
-            ease: 'easeInOut',
-            delay: shape.delay,
-            paused: isPaused,
-          }}
-        />
-      ))}
-    </div>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="w-[90vw] max-w-2xl glass-modal p-0 overflow-hidden max-h-[80vh]">
+        <div className="relative">
+          {/* Header */}
+          <DialogHeader className="p-6 pb-4 text-center border-b border-zinc-700/50">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <Palette className="text-white" size={24} />
+                <span className="text-zinc-400">Design Portfolio</span>
+              </div>
+              <DialogClose asChild>
+                <Button variant="ghost" size="icon" className="h-10 w-10 text-zinc-400 hover:text-white rounded-full">
+                  <X size={20} />
+                </Button>
+              </DialogClose>
+            </div>
+            <DialogTitle className="text-2xl font-semibold text-white leading-tight mb-2">
+              My Canva Designs
+            </DialogTitle>
+            <p className="text-sm text-zinc-400">
+              A collection of {designs.length} creative projects and presentations
+            </p>
+          </DialogHeader>
+          
+          {/* Content */}
+          <div className="p-6 space-y-4 max-h-[50vh] overflow-y-auto custom-scrollbar">
+            <div className="grid gap-4">
+              {designs.map((design, index) => (
+                <motion.a
+                  key={design.link}
+                  href={design.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 p-4 bg-zinc-800/30 hover:bg-zinc-700/50 rounded-xl border border-zinc-700/30 hover:border-zinc-600/50 transition-all duration-200 group"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="text-3xl">{design.emoji}</div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold text-white text-base group-hover:text-zinc-200 transition-colors mb-1">
+                      {design.label}
+                    </h4>
+                    <p className="text-sm text-zinc-400 group-hover:text-zinc-300 transition-colors">
+                      {design.description}
+                    </p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className={`inline-block w-2 h-2 rounded-full ${
+                        design.aspect === 'video' ? 'bg-blue-400' : 'bg-green-400'
+                      }`} />
+                      <span className="text-xs text-zinc-500 capitalize">
+                        {design.aspect === 'video' ? 'Presentation' : 'Square Format'}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 text-zinc-500 group-hover:text-white transition-colors">
+                    <span className="text-sm font-medium">Open</span>
+                    <ExternalLink size={18} />
+                  </div>
+                </motion.a>
+              ))}
+            </div>
+          </div>
+          
+          {/* Footer */}
+          <div className="p-6 pt-4 border-t border-zinc-700/30">
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-zinc-500">
+                Click any design to open in Canva (opens in new tab)
+              </p>
+              <Button 
+                variant="outline" 
+                onClick={onClose}
+                className="border-zinc-600 text-zinc-300 hover:bg-zinc-800 hover:text-white"
+              >
+                Close
+              </Button>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };
-
-const LazyEmbed: React.FC<Design> = ({ src, link, label, aspect }) => {
-  const [loaded, setLoaded] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-
+const DesignPreview: React.FC = () => {
+  const designCount = 4;
+  const isMobile = useIsMobile();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
   return (
-    <div
-      className={`relative w-full ${
-        aspect === 'video' ? 'aspect-video' : 'aspect-square'
-      } shadow-lg rounded-xl overflow-hidden mt-10 max-h-[60vh]`}
-      onClick={() => setLoaded(true)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <AnimatePresence>
-        {loaded ? (
-          <motion.iframe
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            loading="lazy"
-            className="absolute inset-0 w-full h-full border-0"
-            src={src}
-            allow="fullscreen"
-            allowFullScreen
-          />
-        ) : (
-          <motion.div
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-zinc-900/50 flex flex-col items-center justify-center text-white cursor-pointer select-none group"
-          >
-            <AnimatedBackground isPaused={isHovered} />
-            <div className="absolute inset-0 bg-black/30" />
-            <div className="relative z-10 flex flex-col items-center justify-center">
-              <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-4 border border-white/20 group-hover:bg-white/20 transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              </div>
-              <p className="animate-pulse-text text-sm">Click to View Design</p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      <a
-        href={link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="absolute bottom-2 left-2 bg-black/60 px-2 py-1 rounded text-xs text-white backdrop-blur-sm z-20"
+    <>
+      <motion.div
+        onClick={() => setIsModalOpen(true)}
+        className={`relative w-full aspect-video bg-gradient-to-br from-zinc-900/30 to-zinc-800/30 backdrop-blur-sm border border-zinc-700/50 rounded-xl overflow-hidden group cursor-pointer ${isMobile ? 'mt-4 touch-target active:scale-95 mobile-optimized' : 'mt-6'}`}
+        whileHover={!isMobile ? { scale: 1.02, y: -5 } : {}}
+        whileTap={{ scale: 0.98 }}
+        transition={{ duration: 0.3 }}
       >
-        {label}
-      </a>
-    </div>
+        <div className={`absolute inset-0 flex flex-col items-center justify-center text-center ${isMobile ? 'p-4 safe-area-padding' : 'p-8'}`}>
+          {/* Grid of emoji icons */}
+          <div className={`grid grid-cols-2 ${isMobile ? 'gap-2 mb-4' : 'gap-4 mb-6'}`}>
+            <div className={`${isMobile ? 'text-2xl' : 'text-3xl'} group-hover:scale-110 transition-transform duration-300 prevent-select`}>🎨</div>
+            <div className={`${isMobile ? 'text-2xl' : 'text-3xl'} group-hover:scale-110 transition-transform duration-300 prevent-select`} style={{ transitionDelay: '50ms' }}>📊</div>
+            <div className={`${isMobile ? 'text-2xl' : 'text-3xl'} group-hover:scale-110 transition-transform duration-300 prevent-select`} style={{ transitionDelay: '100ms' }}>✨</div>
+            <div className={`${isMobile ? 'text-2xl' : 'text-3xl'} group-hover:scale-110 transition-transform duration-300 prevent-select`} style={{ transitionDelay: '150ms' }}>🎯</div>
+          </div>
+          
+          <h3 className={`text-white font-semibold ${isMobile ? 'text-lg mb-1' : 'text-xl mb-2'} group-hover:text-zinc-200 transition-colors`}>
+            View My Designs
+          </h3>
+          <p className={`text-zinc-400 ${isMobile ? 'text-xs mb-3' : 'text-sm mb-4'} group-hover:text-zinc-300 transition-colors px-2`}>
+            {designCount} Canva Projects & Presentations
+          </p>
+          
+          <div className={`flex items-center text-zinc-500 group-hover:text-white transition-colors ${isMobile ? 'text-xs' : ''}`}>
+            <span className={`${isMobile ? 'text-xs mr-1' : 'text-sm mr-2'}`}>{isMobile ? 'Tap to view all' : 'Click to view all'}</span>
+            <Palette size={isMobile ? 14 : 16} />
+          </div>
+        </div>
+        
+        {/* Subtle animated background */}
+        <div className="absolute inset-0 opacity-20">
+          <motion.div
+            className={`absolute ${isMobile ? 'top-2 left-2 w-6 h-6' : 'top-4 left-4 w-8 h-8'} bg-blue-500/20 rounded-full blur-sm`}
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.2, 0.4, 0.2]
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+          <motion.div
+            className={`absolute ${isMobile ? 'bottom-2 right-2 w-4 h-4' : 'bottom-4 right-4 w-6 h-6'} bg-purple-500/20 rounded-full blur-sm`}
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.2, 0.3, 0.2]
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1
+            }}
+          />
+        </div>
+      </motion.div>
+      
+      <DesignsModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </>
   );
 };
 
 const CanvaSection: React.FC = () => {
+  const isMobile = useIsMobile();
+  
   return (
-    <div id="designs" className="mt-16">
-      <h2 className="text-3xl font-bold mb-6 text-white">Canva Designs</h2>
-      {designs.map((d) => (
-        <LazyEmbed key={d.src} {...d} />
-      ))}
+    <div id="designs" className={isMobile ? 'mt-12' : 'mt-16'}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+      >
+        <h2 className={`font-bold ${isMobile ? 'text-2xl mb-4' : 'text-3xl mb-6'} text-white`}>Design Portfolio</h2>
+        <p className={`text-zinc-400 ${isMobile ? 'text-sm mb-4' : 'mb-6'} max-w-2xl`}>
+          Explore my collection of creative designs, presentations, and visual content. 
+          Fast loading, clean interface, no lag.
+        </p>
+        <DesignPreview />
+      </motion.div>
     </div>
   );
 };
